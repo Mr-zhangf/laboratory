@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>登录</title>
+<link href="/frame/default.css" rel="stylesheet" type="text/css" />
+	<!--必要样式-->
+    <link href="/frame/styles.css" rel="stylesheet" type="text/css" />
+    <link href="/frame/demo.css" rel="stylesheet" type="text/css" />
+    <link href="/frame/loaders.css" rel="stylesheet" type="text/css" />
+    <link href="/layui/css/layui.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="/js/jquery.min.js"></script>
+</head>
+<style>
+.registerBox .login_fields__user{border-bottom:1px solid;}
+.registerBox .login_fields__password{border-bottom:1px solid;}
+.registerBox .login_fields .icon{left: 15px;}
+</style>
+<body>
+<form >
+	<div class='login loginBox'>
+	  <div class='login_title'>
+	    <span>后台管理系统</span>
+	  </div>
+	  <div class='login_fields'>
+	    <div class='login_fields__user'>
+	      <div class='icon'>
+	        <img alt="" src='/images/user_icon_copy.png'>
+	      </div>
+	      <input name="account" id="account" placeholder='用户名' maxlength="16" type='text' autocomplete="off" value="admin"/>
+	    </div>
+	    <div class='login_fields__password'>
+	      <div class='icon'>
+	        <img alt="" src='/images/lock_icon_copy.png'>
+	      </div>
+	      <input name="password" id="password" placeholder='密码' maxlength="16" type='password' autocomplete="off" value="admin">
+	    </div>
+	    <div class='login_fields__submit'>
+	      <input type='button' id="loginBtn" value='登录'>
+	    </div><br><br>
+	    <div class="denglu-yz" id="err"></div>
+	  </div>
+	  <div class='success'>
+	  </div>
+	  <div class='disclaimer'>
+	   
+	  </div>
+	</div>
+	<div class="OverWindows"></div>
+    <script type="text/javascript" src="/layui/layui.js"></script>
+	
+	<script type="text/javascript">
+	    $(document).keypress(function (e) {
+	        // 回车键事件  
+	        if (e.which == 13) {
+	            $('input[type="submit"]').click();
+	        }
+	    });
+	    $("#loginBtn").click(function(){
+	        var account = $("#account").val();
+	        var password = $("#password").val();
+	        if (account.length == 0) {
+	            alert("请输入用户名");
+	            return false;
+	        }
+	        if (password.length == 0) {
+	       	 	alert("请输入密码");
+	            return false;
+	        }
+	        $.post("user/login",{account:account,password:password,type:1},
+	       	function(msg){
+	        	console.log(msg)
+		       	 if(msg != ""){
+		       		 localStorage.setItem("account", msg.account);
+		       		 localStorage.setItem("userId", msg.id);
+		       		 localStorage.setItem("levelId", msg.type);
+		       		 window.location.href = "page/home/home.html";
+		       	 }else{
+		       		 alert("用户名或密码错误！");
+		       	 }
+	        });
+	   });
+
+	    function toLogin(){
+	   		$(".loginBox").show();
+	   		$(".registerBox").hide();
+	   }
+	   function toRregister(){
+	   		$(".loginBox").hide();
+	   		$(".registerBox").show();
+	   		$("#account").val("");
+	   		$("#password").val("");
+	   }
+    </script>
+</form>
+<div class="registerBox login" style="display: none;">
+	<div class='login_title' style="margin-top: -32px;">
+	    <span>用户注册</span>
+	  </div>
+	  <div class="login_fields" style="width:100%">
+	    <div class="login_fields__user">
+	      <div class="icon">账号：</div>
+	      <input name="userName" placeholder="请输入用户名" id="userName" type="text" autocomplete="off" required="" class="input" style="width:90%">
+	    </div>
+	    <div class="login_fields__password">
+	      <div class='icon'>密码：</div>
+	      <input name="pwd" placeholder="请输入密码" id="pwd" type="password" autocomplete="off" required="" class="input" style="width:90%">
+	    </div>
+	    <div class="login_fields__user">
+	      <div class="icon">电话：</div>
+	      <input name="phone" placeholder="请输入电话" id="phone" type="text" autocomplete="off" required="" class="input" style="width:90%">
+	    </div>
+	     <div class="login_fields__user">
+	      <div class="icon">姓名：</div>
+	      <input name="name" placeholder="请输入姓名" id="name" type="text" autocomplete="off" required="" class="input" style="width:90%">
+	    </div>
+	    <div class="login_fields__submit" style="width:100%">
+	      <input type="button" value="注册" onclick="register()" style="width:80%;margin-left:30px;">
+	    </div>
+	    <br><br>
+	    <div style="float: right;margin-right: 43px;">
+	      <input type="button" value="去登录" onclick="toLogin()" style="background: none;border:none;color:#ffffff;cursor: pointer;">
+	    </div>
+	  </div>
+  </div>
+</body>
+<script type="text/javascript">
+function register(){
+	   var account = $("#userName").val();
+		var password = $("#pwd").val();
+		var phone = $("#phone").val();
+		var name = $("#name").val();
+		if(account=="" || password==""){
+			alert("账号和密码不能为空！");
+			return false;
+		}
+		if(phone.length == ""){
+			alert("手机号不能为空！");
+			return false;
+		}
+	   $.post("user/userAdd",{account:account,password:password,phone:phone,name:name,type:2},
+		function(d){
+		   if(d == 1){
+			   alert("恭喜你！注册成功!去登录");
+			   window.location.reload();
+		   }else if(d == 2){
+			   alert("该账号已存在！");
+		   }
+	   });
+	}
+</script>
+</html>

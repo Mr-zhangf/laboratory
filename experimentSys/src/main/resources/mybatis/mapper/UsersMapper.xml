@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.mapper.UsersDao">
+  <resultMap id="BaseResultMap" type="com.demo.entity.Users">
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+  </resultMap>
+  
+  <select id="getByPageUser"  resultMap="BaseResultMap">
+      select * from users
+    </select>
+    
+    <select id="getTotal"  resultType="java.lang.Long">
+	    SELECT count(uid) FROM users
+	  </select>
+    
+    <select id="login" resultMap="BaseResultMap">
+	    SELECT * FROM users
+	    WHERE account = #{account} and password = #{password}
+	  </select>
+	  
+	  <select id="getByAccount"  resultType="java.lang.Long">
+	    SELECT count(uid) FROM users
+	    WHERE account = #{account}
+	  </select>
+    
+    <update id="updateUser">
+    UPDATE users
+    <set>
+      <if test="name != null">
+        name = #{name},
+      </if>
+      <if test="account != null">
+        account = #{account},
+      </if>
+      <if test="password != null">
+        password = #{password},
+      </if>
+       
+    </set>
+    WHERE uid = #{uid}
+  </update>
+    
+  <insert id="insertSelective" parameterType="com.demo.entity.Users">
+    insert into users
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        uid,
+      </if>
+      <if test="account != null">
+        account,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+       
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="account != null">
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      
+    </trim>
+  </insert>
+  
+  <delete id="deleteUser" >
+		   delete from users where uid = #{uid}
+	</delete>
+</mapper>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.mapper.PictureMapper">
+<resultMap id="baseMap" type="com.demo.entity.Picture">
+        <id column="id" jdbcType="INTEGER" property="id" />
+</resultMap>
+<select id="getByPage"  resultMap="baseMap">
+	SELECT * FROM Picture where 1=1
+	order by ctime
+</select>
+<select id="searchById"  resultMap="baseMap">
+	SELECT * FROM Picture where id=#{id}
+</select>
+<insert id="insert" parameterType="com.demo.entity.Picture">
+insert into Picture(pic,title, ctime) 
+values(#{pic},#{title} ,now());
+</insert>
+<delete id="delete" parameterType="java.lang.Integer" >
+    delete from Picture where id = #{id}
+  </delete>
+
+<update id="updateById">
+	update Picture 
+	<set>
+	<if test="title != null"> title = #{title},</if>
+      <if test="pic != null"> pic = #{pic},</if>
+     </set>
+	 where id=#{id} 
+</update>
+
+</mapper>

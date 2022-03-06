@@ -1,0 +1,29 @@
+{
+  "name": "",
+  "version": "0.1.0",
+  "private": true,
+  "homepage": "http://awbeci.xyz/iview-layoutui/",
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  },
+  "dependencies": {
+    "axios": "^0.19.0",
+    "iview": "^3.1.5",
+    "vue": "^2.5.17",
+    "vue-router": "^3.0.1",
+    "vuex": "^3.1.1",
+    "wangeditor": "^4.7.11"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.2.0",
+    "@vue/cli-service": "^3.2.0",
+    "gh-pages": "^2.0.1",
+    "postcss-calc": "^7.0.1",
+    "postcss-cssnext": "^3.1.0",
+    "postcss-import": "^12.0.1",
+    "vue-template-compiler": "^2.5.17"
+  }
+}
